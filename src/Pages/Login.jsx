@@ -11,6 +11,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [isEmail, setIsEmail] = useState(true);
   const [formData, setFormData] = useState(initialFormData);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -21,9 +22,15 @@ const Login = () => {
     if (isEmail) {
       setIsEmail(false);
     } else {
-      alert("Login Success");
-      setFormData(initialFormData);
-      navigate("/");
+      if (formData.email) {
+        setIsLoading(true);
+        setTimeout(() => {
+          alert("Login Success");
+          setFormData(initialFormData);
+          setIsLoading(false);
+          navigate("/");
+        }, 2000);
+      }
     }
   };
 
@@ -99,6 +106,8 @@ const Login = () => {
             marginBottom="5"
             fontWeight="400"
             onClick={handleNext}
+            isDisabled={isEmail && !formData.email}
+            isLoading={isLoading}
           >
             {isEmail ? "Next" : "Submit"}
           </Button>
